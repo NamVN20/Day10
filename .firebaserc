@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "day10-a7dfd": {
+      "hosting": {
+        "Angular": [
+          "day10-a7dfd"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "day10-a7dfd"
+  }
+}
