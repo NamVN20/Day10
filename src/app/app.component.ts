@@ -3,8 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AuthState } from 'src/states/auth.state';
-import * as AuthActions from '../actions/auth.action';
+import * as AuthActions from './actions/auth.action';
+import { AuthState } from './states/auth.state';
+import { User } from './models/user.model';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -17,7 +18,20 @@ export class AppComponent implements OnInit {
     private authService: AuthService,
     private store: Store<{ auth: AuthState }>
   ) {
-
+    onAuthStateChanged(this.auth, (ggUser) => {
+      if (ggUser) {
+        let user: User = {
+          uid: ggUser.uid,
+          email: ggUser.email,
+          displayName: ggUser.displayName,
+          photoURL: ggUser.photoURL,
+        }
+        this.store.dispatch(AuthActions.getUserInfoWhenAlreadySignedIn({ user: user }));
+        this.router.navigateByUrl('home');
+      } else {
+        this.router.navigateByUrl('');
+      }
+    });
   }
   ngOnInit(): void {
 

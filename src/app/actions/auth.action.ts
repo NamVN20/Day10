@@ -1,5 +1,5 @@
-import { User } from '@angular/fire/auth';
 import { createAction, props } from '@ngrx/store';
+import { User } from '../models/user.model';
 
 export const signInWithGG = createAction('[Auth] Sign In With Gg');
 export const signInWithGGSuccess = createAction(

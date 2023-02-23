@@ -1,13 +1,13 @@
-import { user, User } from '@angular/fire/auth';
 import { createReducer, on } from '@ngrx/store';
-import { AuthState } from './../states/auth.state';
+import { AuthState } from '../states/auth.state';
 import * as AuthActions from '../actions/auth.action';
+import { User } from '../models/user.model';
 
 export const initialState: AuthState = {
   isSuccess: false,
   error: '',
   user: <User>{},
-};
+}
 
 export const authReducer = createReducer(
   initialState,
@@ -16,19 +16,19 @@ export const authReducer = createReducer(
     return state;
   }),
   on(AuthActions.signInWithGGSuccess, (state, action) => {
+    console.log(action.type);
     let newState = {
       ...state,
       user: action.user,
     };
-    console.log(action.type);
     return newState;
   }),
   on(AuthActions.signInWithGGFailure, (state, action) => {
+    console.log(action.type);
     let newState = {
       ...state,
       error: action.error,
     };
-    console.log(action.type);
     return newState;
   }),
   on(AuthActions.signOut, (state, action) => {

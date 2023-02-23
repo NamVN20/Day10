@@ -7,12 +7,12 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
-import { provideAuth,getAuth } from '@angular/fire/auth';
+import { provideAuth, getAuth } from '@angular/fire/auth';
 import { ShareModule } from './share/share/share.module';
 import { AuthEffects } from './effects/auth.effect';
-import { authReducer } from 'src/reducer/auth.reducer';
+import { authReducer } from './reducers/auth.reducer';
 
 @NgModule({
   declarations: [
@@ -22,8 +22,8 @@ import { authReducer } from 'src/reducer/auth.reducer';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    StoreModule.forRoot({auth: authReducer}, {}),
-    EffectsModule.forRoot([]),
+    StoreModule.forRoot({ auth: authReducer }, {}),
+    EffectsModule.forRoot([AuthEffects]),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     RouterModule,

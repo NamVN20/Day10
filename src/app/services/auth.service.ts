@@ -1,42 +1,46 @@
 import { Injectable } from '@angular/core';
 import { Auth, GoogleAuthProvider, signInWithPopup, signOut } from '@angular/fire/auth';
+import { from } from 'rxjs';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private auth: Auth) {}
+  constructor(private auth: Auth) { }
 
   login() {
-    console.log('alo')
-    signInWithPopup(this.auth, new GoogleAuthProvider())
-      .then((result) => {
-        // // This gives you a Google Access Token. You can use it to access the Google API.
-        // const credential = GoogleAuthProvider.credentialFromResult(result);
-        // const token = credential!.accessToken;
-        // // The signed-in user info.
-        // const user = result.user;
-        // // IdP data available using getAdditionalUserInfo(result)
-        // // ...
-      })
-      .catch((error) => {
-        // // Handle Errors here.
-        // const errorCode = error.code;
-        // const errorMessage = error.message;
-        // // The email of the user's account used.
-        // const email = error.customData.email;
-        // // The AuthCredential type that was used.
-        // const credential = GoogleAuthProvider.credentialFromError(error);
-        // // ...
-      });
+    return from(new Promise<User>(async (resolve, reject) => {
+      try {
+        console.log('alo')
+        let credential = await signInWithPopup(this.auth, new GoogleAuthProvider());
+        // await this.SetUserData(credential.user);
+        let user: User = {
+          uid: credential.user.uid,
+          email: credential.user.email,
+          displayName: credential.user.displayName,
+          photoURL: credential.user.photoURL,
+        }
+        resolve(user);
+      } catch {
+        reject('Cannot login with google');
+      }
+    }));
   }
 
-  logout(){
-    console.log('alo')
-    signOut(this.auth).then(() => {
-      // Sign-out successful.
-    }).catch((error) => {
-      // An error happened.
-    });
+
+  async logout() {
+    return from(new Promise<any>(async (resolve, reject) => {
+      try {
+        await signOut(this.auth);
+        // this.isUserLoggedIn.next(false);
+        // this.router.navigateByUrl("/");
+        // console.log("out")
+        resolve("log out");
+      }
+      catch {
+        reject("logout fail");
+      }
+    }))
   }
 }

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AuthService } from 'src/app/services/auth.service';
-import { AuthState } from 'src/states/auth.state';
-import * as AuthActions from '../../../../../actions/auth.action';
+import { AuthState } from 'src/app/states/auth.state';
+import * as AuthActions from '../../../../actions/auth.action';
 
 @Component({
   selector: 'app-navbar',
@@ -15,11 +15,11 @@ export class NavbarComponent {
 
   constructor(
     public authService: AuthService,
-    private store: Store<{ auth: AuthState}>
-  ) {}
+    private store: Store<{ auth: AuthState }>
+  ) { }
 
   signOut() {
-    console.log('alo')
-    this.authService.logout();
+    console.log('alo');
+    this.store.dispatch(AuthActions.signOut());
   }
 }
